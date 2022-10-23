@@ -7,9 +7,6 @@
 #include "ParallelRoutines.h"
 
 using namespace std;
-
-// Declarations of routines used in GMRES
-// (This will idealy be moved to a separate file in future)
 void Update(std::complex<double> *x, int lengthofx, int k, int m,
             std::complex<double> *h, std::complex<double> *s,
             std::vector<std::complex<double> *> v);
@@ -19,8 +16,6 @@ void ApplyPlaneRotation(std::complex<double> &dx, std::complex<double> &dy,
                         std::complex<double> &cs, std::complex<double> &sn);
 
 int main(int argc, char *argv[]) {
-
-  //  DECLARATION OF VARIABLES
   double start, end;           /* Used in timing the GMRES routine */
   int i, j, k, N = 32, L = 64; /* N is the number of spatial steps, L is the
                                   number of time steps */
@@ -39,8 +34,6 @@ int main(int argc, char *argv[]) {
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &totalnodes);
   MPI_Comm_rank(MPI_COMM_WORLD, &mynode);
-
-  // RESERVATION OF MEMORY
 
   int opt;
   while ((opt = getopt(argc, argv, "N:L:")) != -1) {

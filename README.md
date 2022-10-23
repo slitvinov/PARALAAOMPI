@@ -25,3 +25,14 @@ where you are requesting 4 processes, a spatial discretisaion of 128 nodes and a
 there are any problems then create an issue on here.
 
 
+# Notes
+
+<pre>
+This will only work if the number of processes it is passed
+divides L exactly. This is by design. "odd" problem sizes
+would significantly slow down the calculation even if the
+functionality was present.
+
+There are further restrictions when dealing using the FFT.
+To be safe the input parameters N,L must be powers of 2.
+</pre>

@@ -1,44 +1,13 @@
-/*****************************************************
- *      Parallel routines used to solve
- *      all-at-once formualtions.
- *
- *      (Currently there are also serial routines as well.)
- *
- *      Code Author: llyr-who
- *
- *      Github: llyr-who
- *
- *      Contact: Please feel free to contact me to implement
- *               suggested improvements. This is my first
- *               parallel software and so there are some
- *               glaring software development practice issues.
- *
- *
- *
- *
- *      VERY IMPORTANT :
- *          This will only work if the number of processes it is passed
- *          divides L exactly. This is by design. "odd" problem sizes
- *          would significantly slow down the calculation even if the
- *          functionality was present.
- *
- *          There are further restrictions when dealing using the FFT.
- *          To be safe the input parameters N,L must be powers of 2.
- *
- *      TODO:
- *		    Separate serial and parallel rotuines.
- *		    Remove mixed usage of AllGather and AllGatherv to just use
- *AllGather.
- *
- * ***************************************************/
-
-#include "ParallelRoutines.h"
-#include "MatrixHelper.h"
 #include <cmath>
 #include <complex>
 #include <math.h>
 #include <mpi.h>
 #include <tuple>
+#include <vector>
+#include <tuple>
+#include "MatrixHelper.h"
+#include "ParallelRoutines.h"
+
 
 using namespace std;
 

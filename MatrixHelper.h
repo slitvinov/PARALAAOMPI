@@ -1,17 +1,3 @@
-/*
- *  Filename: MatrixHelper.h
- *
- *
- *
- */
-
-#ifndef _MATRIXHELP
-#define _MATRIXHELP
-
-#include <complex>
-#include <iostream>
-#include <math.h>
-
 // A simple implemtation of a tridiagonal matrix that is convenient to work with
 typedef std::tuple<std::complex<double> *, std::complex<double> *,
                    std::complex<double> *>
@@ -40,5 +26,3 @@ void DestroyMatrix(std::complex<double> **mat, int m, int n);
 
 // This function sets a tridiagonal matrix equal to another one
 void SetTriDiagEqualTo(int N, tridiag &oldTB, tridiag &newTD);
-
-#endif

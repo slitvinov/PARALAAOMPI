@@ -1,24 +1,13 @@
-/*
- *  Filename: WaveEquation.h
- *
- *  Author: llyr-who.
- *
- *  GitHub: llyr-who/PARALAAOMPI
- *
- *  Discription:
- *
- *  This code is an implementation of the all-at-once formulation of the
- *  wave equation.
- *
- */
-
-#include "MatrixHelper.h"
-#include "ParallelRoutines.h"
+#include <tuple>
 #include <getopt.h>
 #include <iomanip>
 #include <iostream>
+#include <complex>
+#include <vector>
 #include <math.h>
 #include <mpi.h>
+#include "MatrixHelper.h"
+#include "ParallelRoutines.h"
 
 using namespace std;
 

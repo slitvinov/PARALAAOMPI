@@ -1,27 +1,3 @@
-/**************************************************************************
- *
- * Author: llyr-who
- *
- * Discription:
- *
- *   This file provided all the parallel routines needed to implment
- *   a simple version of the all at once method.
- *
- *
- *************************************************************************/
-
-#ifndef _PARAROUTINES
-#define _PARAROUTINES
-
-#include "MatrixHelper.h"
-#include <complex>
-#include <iostream>
-#include <math.h>
-#include <tuple>
-#include <vector>
-
-// Serial Procedures
-
 void MultiplyTriDiagByConst(int N, std::complex<double> coeff, tridiag &matrix);
 void AddTriDiag(int N, tridiag &matrix1, tridiag &matrix2, tridiag &matrix3);
 void FormMassStiff(double h, int N, tridiag &mass, tridiag &stiff);
@@ -96,5 +72,3 @@ void SetEqualTo(int mynode, int numnodes, int N, int L, std::complex<double> *x,
 void PlusEqualTo(int mynode, int numnodes, int N, int L,
                  std::complex<double> *x, std::complex<double> *q,
                  std::complex<double> scalar);
-
-#endif

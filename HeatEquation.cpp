@@ -1,24 +1,12 @@
-/*
- *  Filename: HeatEquation.h
- *
- *  Author: llyr-who
- *
- *  GitHub: llyr-who/PARALAAOMPI
- *
- *  Discription:
- *
- *  This code is a simple implementation of the all-at-once formulation of the
- *  heat equation.
- *
- */
-
-#include "MatrixHelper.h"
-#include "ParallelRoutines.h"
 #include <iomanip>
 #include <iostream>
 #include <math.h>
 #include <mpi.h>
 #include <unistd.h>
+#include <complex>
+#include <vector>
+#include "MatrixHelper.h"
+#include "ParallelRoutines.h"
 
 using namespace std;
 

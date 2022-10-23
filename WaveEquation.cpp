@@ -1,11 +1,8 @@
-#include <tuple>
-#include <getopt.h>
-#include <iomanip>
-#include <iostream>
 #include <complex>
-#include <vector>
-#include <math.h>
+#include <getopt.h>
 #include <mpi.h>
+#include <tuple>
+#include <vector>
 #include "MatrixHelper.h"
 #include "ParallelRoutines.h"
 

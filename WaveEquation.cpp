@@ -15,15 +15,19 @@ void GeneratePlaneRotation(std::complex<double> &dx, std::complex<double> &dy,
 void ApplyPlaneRotation(std::complex<double> &dx, std::complex<double> &dy,
                         std::complex<double> &cs, std::complex<double> &sn);
 
-int main(int argc, char *argv[]) {
-  double start, end;           /* Used in timing the GMRES routine */
-  int i, j, k, N = 32, L = 64; /* N is the number of spatial steps, L is the
-                                  number of time steps */
+enum {N = 32, L = 64}; /* N is the number of spatial steps, L is the
+			  number of time steps */
+int main(int argc, char **argv) {
+  int i, j, k;
   double h = 1.0 / (N - 1);    /* The size of the spatial discretisaion step */
   double timestep = 1.0 / L;   /* Timestep length */
+  // Intermediate calculation vectors
+  std::complex<double> x[N * L];
 
-  std::complex<double> *A, *x, *q, *y, *pointertolargeblocked, *b;
-  std::complex<double> *massContig, *stiffContig;
+  // Right hand side vector
+  std::complex<double> b[N * L];
+
+  std::complex<double> massContig[3 * N - 2];
   std::complex<double> *F, *D, *Ft;
 
   std::vector<double> timesteps, times, perts;
@@ -31,33 +35,10 @@ int main(int argc, char *argv[]) {
   int totalnodes, mynode;
   std::vector<std::complex<double> *> Wblocks, Ablocks;
   std::complex<double> **UMonolithic, **UtMonolithic;
+  
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &totalnodes);
   MPI_Comm_rank(MPI_COMM_WORLD, &mynode);
-
-  int opt;
-  while ((opt = getopt(argc, argv, "N:L:")) != -1) {
-    switch (opt) {
-    case 'N':
-      N = atoi(optarg);
-      break;
-    case 'L':
-      L = atoi(optarg);
-      break;
-    default:
-      cerr << "argument parsing problem" << std::endl;
-      exit(EXIT_FAILURE);
-    }
-  }
-
-  // Intermediate calculation vectors
-  y = new std::complex<double>[N * L];
-  x = new std::complex<double>[N * L];
-  q = new std::complex<double>[N * L];
-
-  // Right hand side vector
-  b = new std::complex<double>[N * L];
-
   // All vectors are given to all nodes. While this increases the
   // memory requirments of the program it significantly reduces
   // the communication cost.
@@ -196,8 +177,6 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    // Reservation of memory for massContig
-    massContig = new std::complex<double>[3 * N - 2];
     // Formation of contiguous mass
     for (j = 0; j < N - 1; j++)
       massContig[j] = std::get<0>(mass)[j];
@@ -231,7 +210,6 @@ int main(int argc, char *argv[]) {
                }
             }
     */
-    std::complex<double> prod = 0;
     U0[0] = massContig[N - 1] * u0[0] + massContig[2 * N - 1] * u0[1];
     for (j = 1; j < N - 1; j++) {
       U0[j] = massContig[j - 1] * u0[j - 1] + massContig[N - 1 + j] * u0[j] +
@@ -282,11 +260,6 @@ int main(int argc, char *argv[]) {
 
   std::complex<double> *H = CreateMatrixContiguous(m + 1, m + 1);
 
-  // Standard procedure is to measure the time taken to complete
-  // the calculation on the master node
-  if (mynode == 0) {
-    start = MPI_Wtime();
-  }
 
   // ----------------------Calculaution Phase Begin
   // ----------------------------------------------------
@@ -395,25 +368,7 @@ int main(int argc, char *argv[]) {
     if (complete)
       continue;
   }
-
-  //
-  // --------------------------- GMRES END
-  // ----------------------------------------------------------
-  //
-
-  // ----------------------Calculaution Phase End
-  // ---------------------------------------------------
-
   MPI_Barrier(MPI_COMM_WORLD);
-  if (mynode == 0) {
-    end = MPI_Wtime();
-    std::cout << " Time taken for the calculation to complete" << std::endl;
-    std::cout << end - start << std::endl;
-    std::cout << std::endl;
-    std::cout << "  How many iterations did it take for GMRES to terminate? "
-              << std::endl;
-    std::cout << j << std::endl;
-  }
   MPI_Finalize();
 }
 

@@ -26,9 +26,20 @@ int main(int argc, char **argv) {
 
   // Right hand side vector
   std::complex<double> b[N * L];
-
   std::complex<double> massContig[3 * N - 2];
+  
+  // Temp vectors used in GMRES rotuine
+  std::complex<double> temp[N * L];
+  std::complex<double> temp2[N * L];
+
+  // Residual vector
+  std::complex<double> r0[N * L];
   std::complex<double> *F, *D, *Ft;
+
+  // Initial condition
+  std::complex<double> u0[N];
+  std::complex<double> U0[N];
+
 
   std::vector<double> timesteps, times, perts;
 
@@ -190,9 +201,6 @@ int main(int argc, char **argv) {
     //
     // b = [Mu_0,-Mu_0, ... 0]
 
-    // Initial condition
-    std::complex<double> *u0 = new std::complex<double>[N];
-    std::complex<double> *U0 = new std::complex<double>[N];
 
     // The smooth initial condition.
     for (i = 0; i < N; i++)
@@ -235,12 +243,6 @@ int main(int argc, char **argv) {
   //  THE CALCULATION PHASE
   //
 
-  // Temp vectors used in GMRES rotuine
-  std::complex<double> *temp = new std::complex<double>[N * L];
-  std::complex<double> *temp2 = new std::complex<double>[N * L];
-
-  // Residual vector
-  std::complex<double> *r0 = new std::complex<double>[N * L];
 
   std::complex<double> normb, beta, resid; /* norm of preconditioned RHS*/
 
